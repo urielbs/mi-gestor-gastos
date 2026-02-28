@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Gestor de Gastos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-8">
+    <h1 class="text-3xl font-bold mb-6 text-blue-800">Resumen de {{ month_name }}</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for item in category_data %}
+        <div class="p-6 rounded-lg shadow-md {% if item.over_budget %}bg-red-100 border-l-8 border-red-500{% else %}bg-white border-l-8 border-green-500{% endif %}">
+            <h2 class="text-xl font-bold">{{ item.name }}</h2>
+            <p class="text-gray-600">Presupuesto: ${{ item.budget }}</p>
+            <p class="text-lg font-semibold {% if item.over_budget %}text-red-600{% endif %}">
+                Gastado: ${{ item.spent }}
+            </p>
+            
+            {% if item.over_budget %}
+            <p class="mt-2 text-sm font-bold text-red-600 uppercase">⚠️ ¡Presupuesto Excedido!</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="mt-10 p-4 bg-blue-900 text-white rounded">
+        <h3 class="text-xl">Gasto Total del Mes: <strong>${{ total_expenses }}</strong></h3>
+    </div>
+</body>
+</html>

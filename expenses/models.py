@@ -23,6 +23,7 @@ class Transaction(models.Model):
     currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='MXN')
     description = models.TextField(blank=True)
     date = models.DateField()
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES, default='EXPENSE')
     is_recurring = models.BooleanField(default=False)
     
     def __str__(self):
