@@ -19,6 +19,7 @@ load_dotenv()
 
 # Ahora reemplaza tus variables fijas por estas llamadas:
 SECRET_KEY = os.getenv('SECRET_KEY')
+# DEBUG = os.getenv('DEBUG') == 'False' #Solo si quiero ponerlo en prod
 DEBUG = os.getenv('DEBUG') == 'True'
 
 
@@ -32,9 +33,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-=-@r5(cp#r%@jl!c0)27((rh2pzn!b15*rynjt9q6fbv^a#v_e'
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
+#ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*'] #Solo si quiero PROD
 ALLOWED_HOSTS = []
 
 

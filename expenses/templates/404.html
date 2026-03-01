@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>404 - Ruta no encontrada | WalletControl</title>
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-slate-50 min-h-screen flex items-center justify-center p-6">
+
+    <div class="max-w-md w-full text-center">
+        <div class="inline-flex items-center justify-center w-24 h-24 bg-red-50 rounded-3xl mb-8 animate-bounce">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+        </div>
+
+        <h1 class="text-8xl font-black text-slate-900 mb-4 tracking-tighter">404</h1>
+        <h2 class="text-2xl font-bold text-slate-800 mb-4">¡Oops! Ruta fuera de presupuesto</h2>
+        
+        <p class="text-slate-500 mb-10 leading-relaxed">
+            Parece que intentaste acceder a un movimiento que no existe o la página se ha extraviado en los archivos financieros. 
+        </p>
+
+        <div class="flex flex-col gap-3">
+            <a href="{% url 'index' %}" class="bg-blue-600 text-white py-4 rounded-2xl font-bold shadow-xl shadow-blue-200 hover:bg-blue-700 transition transform hover:-translate-y-1 active:scale-95">
+                Regresar al Inicio
+            </a>
+            <p class="text-xs text-slate-400 mt-4">WalletControl © 2026 - Gestión Segura</p>
+        </div>
+    </div>
+
+</body>
+</html>
