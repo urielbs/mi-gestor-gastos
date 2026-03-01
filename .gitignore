@@ -1,5 +1,13 @@
+# Entorno virtual
 venv/
-*.pyc
+env/
+
+# Archivos de Python
 __pycache__/
-db.sqlite3
+*.py[cod]
+
+# Base de datos (Si usas SQLite local)
+*.sqlite3
+
+# Archivos de configuración sensible
 .env
