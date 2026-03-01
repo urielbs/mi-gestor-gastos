@@ -2,47 +2,84 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Gestionar Categorías</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Categorías | WalletControl</title>
+    <style>body { font-family: 'Inter', sans-serif; }</style>
 </head>
-<body class="bg-gray-100 p-8">
+<body class="bg-slate-50 min-h-screen p-8">
     <div class="max-w-4xl mx-auto">
-        <div class="flex justify-between items-center mb-6">
-            <h1 class="text-3xl font-bold text-blue-800">Tus Categorías</h1>
-            <a href="{% url 'dashboard' %}" class="bg-gray-500 text-white px-4 py-2 rounded">Volver al Dashboard</a>
+        
+        <div class="flex justify-between items-center mb-10">
+            <div>
+                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">Tus <span class="text-blue-600">Categorías</span></h1>
+                <p class="text-slate-500">Organiza tus gastos y define límites de presupuesto mensuales.</p>
+            </div>
+            <a href="{% url 'dashboard' %}" class="bg-slate-900 text-white px-6 py-2 rounded-xl font-bold hover:bg-black transition shadow-lg shadow-slate-200 flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Volver al Panel
+            </a>
         </div>
 
-        <div class="bg-white p-6 rounded-lg shadow mb-8">
-            <h2 class="font-bold mb-4">Nueva Categoría</h2>
-            <form method="POST" class="flex gap-4">
+        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 mb-10">
+            <h2 class="text-lg font-bold mb-6 text-slate-800 flex items-center gap-2">
+                <span class="w-2 h-6 bg-blue-500 rounded-full"></span>
+                Nueva Categoría
+            </h2>
+            <form method="POST" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                 {% csrf_token %}
-                {{ form.name }}
-                {{ form.monthly_budget }}
-                <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded">Agregar</button>
+                <div class="md:col-span-1">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Nombre</label>
+                    <input type="text" name="name" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Ej. Entretenimiento">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Presupuesto Mensual</label>
+                    <input type="number" name="monthly_budget" step="0.01" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="0.00">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-100 hover:bg-blue-700 transition transform active:scale-95">
+                    Agregar Categoría
+                </button>
             </form>
         </div>
 
-        <div class="bg-white rounded-lg shadow overflow-hidden">
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
             <table class="w-full text-left">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="p-4">Nombre</th>
-                        <th class="p-4">Presupuesto</th>
-                        <th class="p-4 text-center">Acciones</th>
+                <thead>
+                    <tr class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-black">
+                        <th class="p-6 tracking-widest">Nombre</th>
+                        <th class="p-6 tracking-widest text-center">Presupuesto</th>
+                        <th class="p-6 tracking-widest text-center">Acciones</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-slate-50">
                     {% for cat in categories %}
-                    <tr class="border-t">
-                        <td class="p-4">{{ cat.name }}</td>
-                        <td class="p-4">${{ cat.monthly_budget }}</td>
-                        <td class="p-4 flex justify-center gap-2">
-                            <a href="{% url 'edit_category' cat.pk %}" class="text-blue-600 font-bold">Editar</a>
-                            <form action="{% url 'delete_category' cat.pk %}" method="POST" onsubmit="return confirm('¿Borrar categoría? Se perderán sus vínculos.')">
-                                {% csrf_token %}
-                                <button type="submit" class="text-red-600 font-bold">Eliminar</button>
-                            </form>
+                    <tr class="hover:bg-slate-50/50 transition">
+                        <td class="p-6 text-sm text-slate-900 font-bold">{{ cat.name }}</td>
+                        <td class="p-6 text-sm text-center font-semibold text-slate-600">${{ cat.monthly_budget }}</td>
+                        <td class="p-6">
+                            <div class="flex justify-center gap-4">
+                                <a href="{% url 'edit_category' cat.pk %}" class="text-blue-500 hover:text-blue-700 transition">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                    </svg>
+                                </a>
+                                <form action="{% url 'delete_category' cat.pk %}" method="POST" onsubmit="return confirm('¿Borrar esta categoría? Los gastos asociados quedarán sin categoría.')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="text-red-400 hover:text-red-600 transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3" class="p-10 text-center text-slate-400 text-sm italic">Aún no has creado categorías. ¡Crea la primera arriba!</td>
                     </tr>
                     {% endfor %}
                 </tbody>

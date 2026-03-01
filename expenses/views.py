@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db.models import Sum
-from .models import Category, Transaction
+from .models import Category, Transaction, FixedIncome
 from .forms import TransactionForm, CategoryForm, EmailRegisterForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -16,6 +16,22 @@ def dashboard(request):
     # Si no hay selección, por defecto usamos el mes y año actuales
     selected_month = int(request.GET.get('month', today.month))
     selected_year = int(request.GET.get('year', today.year))
+
+    # INGRESOS FIJOS (Vienen de la nueva tabla, siempre se suman)
+    fixed_income_total = FixedIncome.objects.filter(
+        user=request.user
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    # INGRESOS VARIABLES (Son transacciones normales tipo 'INCOME' del mes seleccionado)
+    variable_income_total = Transaction.objects.filter(
+        user=request.user,
+        type='INCOME',
+        date__month=selected_month,
+        date__year=selected_year
+    ).aggregate(total=Sum('amount'))['total'] or 0
+
+    total_income = fixed_income_total + variable_income_total
+
 
     # 3. LÓGICA DEL FORMULARIO DE REGISTRO
     if request.method == 'POST':
@@ -74,6 +90,7 @@ def dashboard(request):
 
     months_dict = dict(months_list)
     selected_month_name = months_dict.get(selected_month)
+    balance_neto = total_income - total_expenses
 
     return render(request, 'expenses/dashboard.html', {
         'category_data': category_data,
@@ -85,6 +102,10 @@ def dashboard(request):
         'years': years_list,
         'form': form,
         'recent_transactions': recent_transactions,
+        'total_income': total_income,
+        'fixed_income_total': fixed_income_total,
+        'variable_income_total': variable_income_total,
+        'balance_neto': balance_neto,
     })
 
 @login_required
@@ -153,3 +174,20 @@ def register(request):
     else:
         form = EmailRegisterForm()
     return render(request, 'registration/register.html', {'form': form})
+
+@login_required
+def manage_fixed_income(request):
+    incomes = FixedIncome.objects.filter(user=request.user)
+    if request.method == 'POST':
+        description = request.POST.get('description')
+        amount = request.POST.get('amount')
+        FixedIncome.objects.create(user=request.user, description=description, amount=amount)
+        return redirect('manage_fixed_income')
+    
+    return render(request, 'expenses/fixed_income.html', {'incomes': incomes})
+
+@login_required
+def delete_fixed_income(request, pk):
+    income = get_object_or_404(FixedIncome, pk=pk, user=request.user)
+    income.delete()
+    return redirect('manage_fixed_income')

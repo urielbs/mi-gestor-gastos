@@ -2,140 +2,266 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Gestor de Gastos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | WalletControl</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Inter', sans-serif; }</style>
 </head>
-<body class="bg-gray-100 p-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-blue-800">Resumen de {{ selected_month_name }} {{ selected_year }}</h1>
-        <a href="{% url 'manage_categories' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-            ⚙️ Configurar Categorías
-        </a>
+<body class="bg-slate-50 min-h-screen pb-20">
 
-        <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="text-sm text-red-600 hover:underline">
-                Cerrar Sesión
-            </button>
-        </form>
-    </div>
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="bg-blue-600 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zM12 8V7m0 1v1m0 5v1m0-1v-1m-7 0h1m7-7h1M5 12a7 7 0 1114 0 7 7 0 01-14 0z" />
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-slate-900">WalletControl</span>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <a href="{% url 'manage_fixed_income' %}" class="hidden md:flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-emerald-600 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        Ingresos Fijos
+                    </a>
 
-    
-
-    <form method="GET" class="flex gap-4 mb-8 bg-gray-200 p-4 rounded-lg items-center">
-    <div>
-        <label class="text-sm font-bold text-gray-700">Mes:</label>
-        <select name="month" class="p-2 rounded border">
-            {% for num, name in months %}
-            <option value="{{ num }}" {% if num == selected_month %}selected{% endif %}>{{ name }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div>
-        <label class="text-sm font-bold text-gray-700">Año:</label>
-        <select name="year" class="p-2 rounded border">
-            {% for y in years %}
-            <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-black transition">
-        Ver Resumen
-    </button>
-    </form>
-
-    <div class="bg-white p-6 rounded-lg shadow-lg mb-10">
-        <h2 class="text-xl font-bold mb-4 text-gray-700">Registrar Nuevo Movimiento</h2>
-
-        {% if form.errors %}
-        <div class="bg-red-500 text-white p-4 rounded mb-4">
-            <strong>Error:</strong> Por favor revisa los campos. 
-            {{ form.errors }}
+                    <a href="{% url 'manage_categories' %}" class="hidden md:flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-blue-600 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        Categorías
+                    </a>
+                    <form action="{% url 'logout' %}" method="post" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg text-sm font-bold hover:bg-red-50 hover:text-red-600 transition">
+                            Cerrar Sesión
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
-        {% endif %}
+    </nav>
 
-        <form method="POST" ...>
-            {% csrf_token %}
-        </form>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        
+        <div class="md:flex justify-between items-end mb-8 gap-4">
+            <div>
+                <h1 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+                    Resumen de {{ selected_month_name }} <span class="text-blue-600">{{ selected_year }}</span>
+                </h1>
+                <p class="text-slate-500">Aquí tienes el estado de tus finanzas personales.</p>
+            </div>
 
-        <form method="POST" class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4 items-end">
-            {% csrf_token %}
-            <div>
-                <label class="block text-sm font-medium text-gray-600">Descripción</label>
-                {{ form.description }}  </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-600">Monto</label>
-                {{ form.amount }}
+            <form method="GET" class="flex gap-2 bg-white p-2 rounded-2xl shadow-sm border border-slate-200 mt-4 md:mt-0">
+                <select name="month" class="bg-transparent text-sm font-bold p-2 outline-none cursor-pointer">
+                    {% for num, name in months %}
+                    <option value="{{ num }}" {% if num == selected_month %}selected{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+                <select name="year" class="bg-transparent text-sm font-bold p-2 outline-none cursor-pointer border-l border-slate-100">
+                    {% for y in years %}
+                    <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="bg-slate-900 text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-black transition">
+                    Filtrar
+                </button>
+            </form>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <h2 class="text-sm font-bold text-slate-400 uppercase mb-4">Estructura de Ingresos</h2>
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-600">Ingresos Fijos (Mensuales)</span>
+                        <span class="font-bold text-emerald-600">${{ fixed_income_total }}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-600">Ingresos Variables (Este mes)</span>
+                        <span class="font-bold text-blue-600">${{ variable_income_total }}</span>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex justify-between items-center">
+                        <span class="font-bold text-slate-900">Ingreso Total</span>
+                        <span class="text-2xl font-black text-emerald-700">${{ total_income }}</span>
+                    </div>
+                </div>
             </div>
-            <div>
-            <label class="block text-sm font-medium text-gray-600">Tipo</label>
-            {{ form.type }} </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-600">Moneda</label>
-                {{ form.currency }}
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-sm font-bold text-slate-400 uppercase">Ingresos Totales</h2>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-sm">
+                        <span class="text-slate-500">Fijos (Sueldo/Renta):</span>
+                        <span class="font-bold text-slate-700">${{ fixed_income_total }}</span>
+                    </div>
+                    <div class="flex justify-between text-sm">
+                        <span class="text-slate-500">Variables (Extras):</span>
+                        <span class="font-bold text-slate-700">${{ variable_income_total }}</span>
+                    </div>
+                    <div class="pt-2 border-t flex justify-between items-center">
+                        <span class="font-bold text-slate-900">Total:</span>
+                        <span class="text-xl font-black text-emerald-600">${{ total_income }}</span>
+                    </div>
+                </div>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-600">Categoría</label>
-                {{ form.category }}
+
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+                <h2 class="text-sm font-bold text-slate-400 uppercase mb-4">Gastos del Mes</h2>
+                <div class="flex flex-col justify-center h-full">
+                    <span class="text-slate-500 text-sm">Total acumulado:</span>
+                    <span class="text-3xl font-black text-red-600">${{ total_expenses }}</span>
+                </div>
             </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-600">Fecha</label>
-                {{ form.date }}
+
+            <div class="bg-slate-900 p-6 rounded-3xl shadow-xl text-white relative overflow-hidden">
+                <div class="relative z-10">
+                    <p class="text-slate-400 text-xs font-bold uppercase mb-1">Disponible Real</p>
+                    <h3 class="text-4xl font-black">${{ balance_neto }}</h3>
+                    <p class="text-[10px] text-slate-500 mt-2">Ingresos - Gastos de {{ selected_month_name }}</p>
+                </div>
+                <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-emerald-500/10 rounded-full"></div>
             </div>
-            <button type="submit" class="bg-blue-600 text-white p-2 rounded font-bold">Guardar</button>
-        </form>
-    </div>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for item in category_data %}
-        <div class="p-6 rounded-lg shadow-md {% if item.over_budget %}bg-red-100 border-l-8 border-red-500{% else %}bg-white border-l-8 border-green-500{% endif %}">
-            <h2 class="text-xl font-bold">{{ item.name }}</h2>
-            <p class="text-gray-600">Presupuesto: ${{ item.budget }}</p>
-            <p class="text-lg font-semibold {% if item.over_budget %}text-red-600{% endif %}">
-                Gastado: ${{ item.spent }}
-            </p>
-            
-            {% if item.over_budget %}
-            <p class="mt-2 text-sm font-bold text-red-600 uppercase">⚠️ ¡Presupuesto Excedido!</p>
+        </div>
+
+        <div class="bg-gradient-to-br from-blue-700 to-blue-900 p-8 rounded-3xl shadow-xl mb-10 text-white relative overflow-hidden">
+            <div class="relative z-10">
+                <p class="text-blue-100 text-sm font-medium uppercase tracking-wider mb-1">Gasto Total del Mes</p>
+                <h3 class="text-5xl font-bold">${{ total_expenses }}</h3>
+            </div>
+            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-white/10 rounded-full"></div>
+        </div>
+
+        <div class="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 mb-10">
+            <h2 class="text-lg font-bold mb-6 flex items-center gap-2 text-slate-800">
+                <span class="w-2 h-6 bg-emerald-500 rounded-full"></span>
+                Nuevo Movimiento
+            </h2>
+
+            {% if form.errors %}
+            <div class="bg-red-50 border border-red-200 text-red-700 p-4 rounded-xl mb-6 text-sm">
+                <strong>Error:</strong> Revisa los campos obligatorios.
+            </div>
             {% endif %}
+
+            <form method="POST" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4 items-end">
+                {% csrf_token %}
+                <div class="lg:col-span-2">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Descripción</label>
+                    <input type="text" name="description" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Ej. Supermercado">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Monto</label>
+                    <input type="number" name="amount" step="0.01" required class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="0.00">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Tipo</label>
+                    <select name="type" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition appearance-none bg-white">
+                        <option value="EXPENSE">Gasto</option>
+                        <option value="INCOME">Ingreso</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1 ml-1">Categoría</label>
+                    <select name="category" class="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 outline-none transition appearance-none bg-white">
+                        {% for cat in category_data %}
+                        <option value="{{ cat.id }}">{{ cat.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold shadow-lg shadow-blue-200 hover:bg-blue-700 transition transform active:scale-95">
+                    Guardar
+                </button>
+                <input type="hidden" name="date" value="{{ today|date:'Y-m-d' }}">
+            </form>
         </div>
-        {% endfor %}
-    </div>
 
-    <div class="mt-10 p-4 bg-blue-900 text-white rounded">
-        <h3 class="text-xl">Gasto Total del Mes: <strong>${{ total_expenses }}</strong></h3>
-    </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+            {% for item in category_data %}
+            <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-md transition group">
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-lg font-bold text-slate-800">{{ item.name }}</h2>
+                    <span class="text-xs font-bold px-2 py-1 rounded-lg {% if item.over_budget %}bg-red-100 text-red-600{% else %}bg-emerald-100 text-emerald-600{% endif %}">
+                        ${{ item.budget }}
+                    </span>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="text-2xl font-black text-slate-900">${{ item.spent }}</p>
+                    <p class="text-xs text-slate-400">Gastado este mes</p>
+                </div>
 
-    <div class="mt-10 bg-white p-6 rounded-lg shadow-lg">
-    <h2 class="text-xl font-bold mb-4">Últimos Movimientos</h2>
-    <table class="w-full text-left border-collapse">
-        <tr class="bg-gray-100 text-gray-700">
-            <th class="p-2">Fecha</th>
-            <th class="p-2">Descripción</th>
-            <th class="p-2">Monto</th>
-            <th class="p-3 text-sm font-semibold text-gray-700 text-center">Acciones</th>
-        </tr>
-        {% for tx in recent_transactions %}
-        <tr class="border-b">
-            <td class="p-2">{{ tx.date }}</td>
-            <td class="p-2">{{ tx.description }}</td>
-            <td class="p-2 font-bold {% if tx.type == 'EXPENSE' %}text-red-600{% else %}text-green-600{% endif %}">
-                ${{ tx.amount }}
-            </td>
-            <td class="p-3 text-center">
-                <form action="{% url 'delete_transaction' tx.pk %}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar este movimiento?')">
-                    {% csrf_token %}
-                    <button type="submit" class="text-red-500 hover:text-red-700 transition font-bold">
-                        Eliminar
-                    </button>
-                </form>
-            </td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="3" class="p-4 text-center">No hay movimientos registrados.</td></tr>
-        {% endfor %}
-    </table>
-    </div>
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                    <div class="h-full transition-all duration-1000 {% if item.over_budget %}bg-red-500{% else %}bg-emerald-500{% endif %}" 
+                         style="width: {% widthratio item.spent item.budget 100 %}%"></div>
+                </div>
+                
+                {% if item.over_budget %}
+                <p class="mt-3 text-[10px] font-bold text-red-500 uppercase tracking-widest flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                    Límite excedido
+                </p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="p-6 border-b border-slate-50 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-slate-800">Últimos Movimientos</h2>
+                <span class="text-xs text-slate-400 uppercase font-bold tracking-tighter">Historial Reciente</span>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50/50 text-slate-400 text-[10px] uppercase font-black">
+                            <th class="p-4 tracking-widest">Fecha</th>
+                            <th class="p-4 tracking-widest">Descripción</th>
+                            <th class="p-4 tracking-widest">Monto</th>
+                            <th class="p-4 tracking-widest text-center">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-50">
+                        {% for tx in recent_transactions %}
+                        <tr class="hover:bg-slate-50/50 transition">
+                            <td class="p-4 text-sm text-slate-500 font-medium">{{ tx.date|date:"d M, Y" }}</td>
+                            <td class="p-4 text-sm text-slate-900 font-semibold">{{ tx.description }}</td>
+                            <td class="p-4">
+                                <span class="text-sm font-bold {% if tx.type == 'EXPENSE' %}text-red-600{% else %}text-emerald-600{% endif %}">
+                                    {% if tx.type == 'EXPENSE' %}-{% else %}+{% endif %}${{ tx.amount }}
+                                </span>
+                            </td>
+                            <td class="p-4 text-center">
+                                <form action="{% url 'delete_transaction' tx.pk %}" method="POST" onsubmit="return confirm('¿Eliminar este registro?')">
+                                    {% csrf_token %}
+                                    <button type="submit" class="p-2 hover:bg-red-50 rounded-lg text-red-400 hover:text-red-600 transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="4" class="p-10 text-center text-slate-400 text-sm italic">No hay movimientos registrados este mes.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
 
 </body>
 </html>
