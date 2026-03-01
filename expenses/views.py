@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.db.models import Sum
 from .models import Category, Transaction
-from .forms import TransactionForm, CategoryForm
+from .forms import TransactionForm, CategoryForm, EmailRegisterForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.forms import UserCreationForm
 
 @login_required
 def dashboard(request):
@@ -142,3 +143,13 @@ def delete_category(request, pk):
         category.delete()
         return redirect('manage_categories')
     return redirect('manage_categories')
+
+def register(request):
+    if request.method == 'POST':
+        form = EmailRegisterForm(request.POST) 
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = EmailRegisterForm()
+    return render(request, 'registration/register.html', {'form': form})

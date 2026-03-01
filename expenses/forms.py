@@ -1,3 +1,5 @@
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django import forms
 from .models import Transaction, Category
 
@@ -30,3 +32,36 @@ class CategoryForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'w-full p-2 border rounded', 'placeholder': 'Ej. Entretenimiento'}),
             'monthly_budget': forms.NumberInput(attrs={'class': 'w-full p-2 border rounded', 'placeholder': '0.00'}),
         }
+
+class EmailRegisterForm(UserCreationForm):
+    # Estilo correo
+    username = forms.EmailField(
+        label="Correo Electrónico",
+        help_text="Introduce un correo electrónico válido.",
+        widget=forms.EmailInput(attrs={
+            'class': 'w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none',
+            'placeholder': 'ejemplo@correo.com'
+        })
+    )
+
+    # Estilo para la Contraseña
+    password1 = forms.CharField(
+        label="Contraseña",
+        widget=forms.PasswordInput(attrs={
+            'class': 'w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none',
+            'placeholder': '••••••••'
+        })
+    )
+
+    # Estilo para la Confirmación
+    password2 = forms.CharField(
+        label="Confirmar Contraseña",
+        widget=forms.PasswordInput(attrs={
+            'class': 'w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none',
+            'placeholder': '••••••••'
+        })
+    )
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = ("username",) 
