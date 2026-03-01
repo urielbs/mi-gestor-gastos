@@ -7,6 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 
+def index(request):
+    # Si el usuario ya inició sesión, lo mandamos directo al Dashboard
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return render(request, 'expenses/index.html')
+
 @login_required
 def dashboard(request):
     # 1. REFERENCIA DE TIEMPO

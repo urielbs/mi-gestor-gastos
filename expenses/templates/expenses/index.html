@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>WalletControl | Toma el control de tu dinero</title>
+    <style>body { font-family: 'Inter', sans-serif; }</style>
+</head>
+<body class="bg-white text-slate-900 overflow-x-hidden">
+
+    <nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-slate-100">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-blue-600 p-2 rounded-lg text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zM12 8V7m0 1v1m0 5v1m0-1v-1m-7 0h1m7-7h1M5 12a7 7 0 1114 0 7 7 0 01-14 0z" />
+                    </svg>
+                </div>
+                <span class="text-xl font-extrabold tracking-tight">WalletControl</span>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="{% url 'login' %}" class="text-sm font-bold text-slate-600 hover:text-blue-600 transition">Iniciar Sesión</a>
+                <a href="{% url 'register' %}" class="bg-slate-900 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-600 transition transform hover:scale-105">Crear Cuenta</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative pt-40 pb-20 px-6">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-6xl md:text-7xl font-black text-slate-900 leading-[1.1] tracking-tighter mb-8">
+                Domina tus finanzas <br>
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-emerald-500">sin complicaciones.</span>
+            </h1>
+            <p class="text-xl text-slate-500 mb-10 max-w-2xl mx-auto leading-relaxed">
+                La plataforma inteligente para gestionar gastos, presupuestos y ahorros en un solo lugar. Diseñada para darte claridad financiera total.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="{% url 'register' %}" class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-2xl shadow-blue-200 hover:bg-blue-700 transition transform hover:-translate-y-1">
+                    Comenzar Gratis
+                </a>
+                <a href="#como-funciona" class="bg-slate-50 text-slate-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-slate-100 transition">
+                    Ver Funcionamiento
+                </a>
+            </div>
+        </div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 -z-10 w-full h-[600px] bg-gradient-to-b from-blue-50/50 to-transparent"></div>
+    </section>
+
+    <section id="como-funciona" class="py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20">
+                <h2 class="text-4xl font-black text-slate-900 mb-4 tracking-tight">Tu cartera, ahora inteligente</h2>
+                <p class="text-slate-500">Tres pilares diseñados para tu salud financiera.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div class="group">
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Ingresos Automatizados</h3>
+                    <p class="text-slate-500 leading-relaxed text-sm">Configura tus sueldos y rentas fijas una sola vez. WalletControl se encarga de proyectarlos mes con mes automáticamente.</p>
+                </div>
+
+                <div class="group">
+                    <div class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Límites por Categoría</h3>
+                    <p class="text-slate-500 leading-relaxed text-sm">Crea presupuestos para comida, renta o diversión. Nuestras barras de progreso te avisarán antes de que excedas tu límite.</p>
+                </div>
+
+                <div class="group">
+                    <div class="w-14 h-14 bg-slate-900 text-white rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition-all duration-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Seguridad Bancaria</h3>
+                    <p class="text-slate-500 leading-relaxed text-sm">Tus datos están blindados con encriptación de grado militar y variables de entorno protegidas. Tu información es solo tuya.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t border-slate-100 text-center">
+        <div class="flex items-center justify-center gap-2 mb-4">
+            <div class="bg-blue-600 p-1 rounded text-white text-xs font-bold">W</div>
+            <span class="font-bold text-slate-900">WalletControl</span>
+        </div>
+        <p class="text-slate-400 text-sm">© 2026 Desarrollado por Uriel. Todos los derechos reservados.</p>
+    </footer>
+
+</body>
+</html>
