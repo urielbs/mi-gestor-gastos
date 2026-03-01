@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Sum
 from .models import Category, Transaction
-from .forms import TransactionForm
+from .forms import TransactionForm, CategoryForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
@@ -102,3 +102,43 @@ def delete_transaction(request, pk):
     
     # Si alguien intenta entrar por accidente (GET), lo regresamos al dashboard
     return redirect('dashboard')
+
+
+@login_required
+def manage_categories(request):
+    categories = Category.objects.filter(user=request.user)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            category = form.save(commit=False)
+            category.user = request.user
+            category.save()
+            return redirect('manage_categories')
+    else:
+        form = CategoryForm()
+    
+    return render(request, 'expenses/categories.html', {
+        'categories': categories,
+        'form': form
+    })
+
+@login_required
+def edit_category(request, pk):
+    category = get_object_or_404(Category, pk=pk, user=request.user)
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            return redirect('manage_categories')
+    else:
+        form = CategoryForm(instance=category)
+    
+    return render(request, 'expenses/edit_category.html', {'form': form, 'category': category})
+
+@login_required
+def delete_category(request, pk):
+    category = get_object_or_404(Category, pk=pk, user=request.user)
+    if request.method == 'POST':
+        category.delete()
+        return redirect('manage_categories')
+    return redirect('manage_categories')

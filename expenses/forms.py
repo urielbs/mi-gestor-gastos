@@ -20,3 +20,13 @@ class TransactionForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         if user:
             self.fields['category'].queryset = Category.objects.filter(user=user)
+
+
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'monthly_budget']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'w-full p-2 border rounded', 'placeholder': 'Ej. Entretenimiento'}),
+            'monthly_budget': forms.NumberInput(attrs={'class': 'w-full p-2 border rounded', 'placeholder': '0.00'}),
+        }
