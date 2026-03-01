@@ -6,7 +6,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 p-8">
-    <h1 class="text-3xl font-bold mb-6 text-blue-800">Resumen de {{ month_name }}</h1>
+    <h1 class="text-3xl font-bold mb-6 text-blue-800">Resumen de {{ selected_month_name }} - {{ selected_year }}</h1>
 
     <form method="GET" class="flex gap-4 mb-8 bg-gray-200 p-4 rounded-lg items-center">
     <div>
@@ -99,6 +99,7 @@
             <th class="p-2">Fecha</th>
             <th class="p-2">Descripción</th>
             <th class="p-2">Monto</th>
+            <th class="p-3 text-sm font-semibold text-gray-700 text-center">Acciones</th>
         </tr>
         {% for tx in recent_transactions %}
         <tr class="border-b">
@@ -106,6 +107,14 @@
             <td class="p-2">{{ tx.description }}</td>
             <td class="p-2 font-bold {% if tx.type == 'EXPENSE' %}text-red-600{% else %}text-green-600{% endif %}">
                 ${{ tx.amount }}
+            </td>
+            <td class="p-3 text-center">
+                <form action="{% url 'delete_transaction' tx.pk %}" method="POST" onsubmit="return confirm('¿Seguro que quieres borrar este movimiento?')">
+                    {% csrf_token %}
+                    <button type="submit" class="text-red-500 hover:text-red-700 transition font-bold">
+                        Eliminar
+                    </button>
+                </form>
             </td>
         </tr>
         {% empty %}

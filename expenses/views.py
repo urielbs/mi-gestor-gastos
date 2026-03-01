@@ -4,6 +4,7 @@ from .models import Category, Transaction
 from .forms import TransactionForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 @login_required
 def dashboard(request):
@@ -70,13 +71,34 @@ def dashboard(request):
     # Rango de años (este año y los dos anteriores)
     years_list = range(today.year - 2, today.year + 1)
 
+    months_dict = dict(months_list)
+    selected_month_name = months_dict.get(selected_month)
+
     return render(request, 'expenses/dashboard.html', {
         'category_data': category_data,
         'total_expenses': total_expenses,
         'selected_month': selected_month,
         'selected_year': selected_year,
+        'selected_month_name': selected_month_name,
         'months': months_list,
         'years': years_list,
         'form': form,
         'recent_transactions': recent_transactions,
     })
+
+@login_required
+def delete_transaction(request, pk):
+    # Buscamos la transacción por su ID (pk)
+    transaction = get_object_or_404(Transaction, pk=pk, user=request.user)
+    
+    # Guardamos el mes y año antes de borrar para regresar a la misma vista
+    month = transaction.date.month
+    year = transaction.date.year
+    
+    if request.method == 'POST':
+        transaction.delete()
+        print(f"🗑️ Transacción {pk} eliminada con éxito")
+        return redirect(f'/dashboard/?month={month}&year={year}')
+    
+    # Si alguien intenta entrar por accidente (GET), lo regresamos al dashboard
+    return redirect('dashboard')
