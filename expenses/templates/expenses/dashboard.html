@@ -8,6 +8,28 @@
 <body class="bg-gray-100 p-8">
     <h1 class="text-3xl font-bold mb-6 text-blue-800">Resumen de {{ month_name }}</h1>
 
+    <form method="GET" class="flex gap-4 mb-8 bg-gray-200 p-4 rounded-lg items-center">
+    <div>
+        <label class="text-sm font-bold text-gray-700">Mes:</label>
+        <select name="month" class="p-2 rounded border">
+            {% for num, name in months %}
+            <option value="{{ num }}" {% if num == selected_month %}selected{% endif %}>{{ name }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label class="text-sm font-bold text-gray-700">Año:</label>
+        <select name="year" class="p-2 rounded border">
+            {% for y in years %}
+            <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <button type="submit" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-black transition">
+        Ver Resumen
+    </button>
+    </form>
+
     <div class="bg-white p-6 rounded-lg shadow-lg mb-10">
         <h2 class="text-xl font-bold mb-4 text-gray-700">Registrar Nuevo Movimiento</h2>
 
