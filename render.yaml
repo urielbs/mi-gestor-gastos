@@ -2,6 +2,7 @@ services:
   - type: web
     name: walletcontrol-app
     runtime: python
+    plan: free 
     buildCommand: |
       pip install -r requirements.txt
       python manage.py collectstatic --no-input
@@ -19,4 +20,5 @@ services:
 
 databases:
   - name: walletcontrol-db
-    databaseName: db_gastos
+    databaseName: gestor_gastos
+    plan: free 
