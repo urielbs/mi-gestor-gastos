@@ -19,5 +19,5 @@ services:
 
 databases:
   - name: walletcontrol-db
-    databaseName: gestor_gastos
+    databaseName: db_gastos
     user: postgres
