@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: walletcontrol-app
+    runtime: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --no-input
+      python manage.py migrate
+    startCommand: gunicorn config.wsgi:application
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: walletcontrol-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: False
+
+databases:
+  - name: walletcontrol-db
+    databaseName: gestor_gastos
+    user: postgres
